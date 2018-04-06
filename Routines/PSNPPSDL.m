@@ -1,5 +1,7 @@
-PSNPPSDL ;HP/ART - National Drug File Updates File Download ;09/23/2015
- ;;4.0;NATIONAL DRUG FILE;**513**; 30 Oct 98
+PSNPPSDL ;HP/ART - National Drug File Updates File Download ;2018-04-05  11:12 AM
+ ;;4.0;NATIONAL DRUG FILE;**513,10001**; 30 Oct 98;Build 53
+ ; Original Routine authored by HP/ART for Dept of Veterans Affairs
+ ; *10001* modifications by Sam Habiel @ OSEHRA (c) 2018
  ;
  ;Reference to ^XUSEC( supported by IA #10076
  ;
@@ -56,7 +58,7 @@ SCHDOPT ; Entry point for menu option "PSN TASK SCHEDULE DOWNLOAD" to create and
  S DIR("A")="Do you want to schedule an automatic NDF download in TaskMan",DIR("B")="NO"
  D ^DIR I 'Y Q
  ;
- N %DT,Y
+ N %,%DT,Y
  D NOW^%DTC
  S %DT(0)=%,%DT="EFATX",%DT("A")="Enter date/time: " D ^%DT
  S PSSTART=$$FMADD^XLFDT(Y,0,0,5)
@@ -120,14 +122,17 @@ LEGACY() ;check legacy update file processing parameter
  Q PSNF
  ;
 CHKD ; check Unix dir and update it if contains control char and other special characters
+ ; *10001* Replace with calls to ^%ZISH
  I $$OS^%ZOSV()'="UNIX" Q
- N UNXLD,UNXLD1 S (UNXLD,UNXLD1)=""
  D UPDT
- S UNXLD=$$GETD^PSNFTP()
- I '$$DIREXIST^PSNFTP2(UNXLD) D MAKEDIR^PSNFTP2(UNXLD)
+ ; S UNXLD=$$GETD^PSNFTP()  *10001*
+ ; I '$$DIREXIST^PSNFTP2(UNXLD) D MAKEDIR^PSNFTP2(UNXLD) *10001*
+ N % S %=$$MKDIR^%ZISH($$GETD^PSNFTP()) ; *10001*
+ I % D EN^DDIOL("Failed to create a new directory. Please check your permissions")
  Q
  ;
-UPDT ; update unix/linux directory, called by PSNPPSDL
+UPDT ; update unix/linux directory, called by PSNPPSDL 
+ N UNXLD,UNXLD1 S (UNXLD,UNXLD1)=""
  N DA,DIE,DR
  S UNXLD=$P($G(^PS(57.23,1,0)),"^",4) I UNXLD]"" D
  .S UNXLD1=$$STRIP^PSNPARM(UNXLD) I UNXLD]"",(UNXLD'=UNXLD1) S DIE="^PS(57.23,",DA=1,DR="3////"_UNXLD D ^DIE K DIE,DA,DR

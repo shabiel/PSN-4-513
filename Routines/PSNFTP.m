@@ -1,5 +1,7 @@
-PSNFTP ;HP/ART - PPS-N National Drug File Updates File Transfer ;09/25/2015
- ;;4.0;NATIONAL DRUG FILE;**513**; 30 Oct 98
+PSNFTP ;HP/ART - PPS-N National Drug File Updates File Transfer ;2018-04-05  12:30 PM
+ ;;4.0;NATIONAL DRUG FILE;**513,10001**; 30 Oct 98;Build 53
+ ; Original routine authored by HP/ART for Department of Veterans Affairs
+ ; Changes in *10001* by OSEHRA/Sam Habiel (c) 2018
  ;Supported ICRs/IAs
  ;External reference to $$DECRYP^XUSRB1() supported by DBIA 2241
  ;External reference to ^%ZISH supported by DBIA 2320
@@ -15,6 +17,9 @@ PSNFTP ;HP/ART - PPS-N National Drug File Updates File Transfer ;09/25/2015
 EN ; Main Entry Point for PPS-N National Drug File Updates File Transfer
  ;If a scheduled job initiates the PSNSCJOB=1 will be defined.
  I $$GET1^DIQ(57.23,1,9,"I")="Y" Q
+ ;
+ ; Next line *10001* - Outside of IHS/VA run new code
+ I "IV"'[$G(DUZ("AG")) D EN^PSNSYNCNDFFILES
  ;
  N PSRC,PSOS,PSREMFIL,PSFILE,PSFFND,DIE,DA,DR,LOCDIR,PSUID,PSNDNLDB
  N PSPREV,PSLAST,PSNEW,PSERRMSG,PSSIZE,PSWRKDIR,PSOLDF,PSFDCNT,PSOS2,PRSC,PSNPS,PSOUNXLD,X,XPV
@@ -287,7 +292,7 @@ WINPING(PSRC,PSADDR,PSWRKDIR,PSLOGFIL) ; PING server to ensure it is available
  F  S PSPNG=$O(^TMP("PSNPINGLOG",$J,PSPNG)) Q:PSPNG=""  D
  . S PSPNG1=$G(^TMP("PSNPINGLOG",$J,PSPNG))
  . I PSPNG1["Received = 0" S PSRC="0^Remote server - "_PSADDR_" - did not respond"
- ;
+ ; 
  Q
 MAILFTP(PSMSGTYP,PSFILE,PSSIZE,PSERRMSG) ; mail message to notify users of the NDF Update File download status
  ;Inputs: PSMSGTYP - message type - 1=file downloaded, 0=error
@@ -307,7 +312,7 @@ MAILFTP(PSMSGTYP,PSFILE,PSSIZE,PSERRMSG) ; mail message to notify users of the N
  S PSNPS=$P($G(^PS(59.7,1,10)),"^",12)
  S XMSUB="",XMDUZ="noreply@domain.ext"
  I PSMSGTYP D
- . ;I PSNPS'="" I PSNPS="P"!(PSNPS="S")!(PSNPS="T")
+ . ;I PSNPS'="" I PSNPS="P"!(PSNPS="S")!(PSNPS="T") 
  . S XMSUB="PPS-N/NDF File "_PSFILE_$S(PSSIZE="":"was not",1:"")_" DOWNLOADED"
  . I PSNPS'="" I PSNPS="Q" S XMSUB="PPS-N/NDF File "_PSFILE_$S(PSSIZE="":"was not",1:"")_" DOWNLOADED FOR QA"
  . I PSSIZE="" D MSGTEXT0(PSFILE,PSSIZE,"File could not be downloaded.") Q
