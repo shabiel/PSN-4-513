@@ -1,4 +1,4 @@
-PSNFTP ;HP/ART - PPS-N National Drug File Updates File Transfer ;2018-04-05  12:30 PM
+PSNFTP ;HP/ART - PPS-N National Drug File Updates File Transfer ;2018-04-06  2:39 PM
  ;;4.0;NATIONAL DRUG FILE;**513,10001**; 30 Oct 98;Build 53
  ; Original routine authored by HP/ART for Department of Veterans Affairs
  ; Changes in *10001* by OSEHRA/Sam Habiel (c) 2018
@@ -19,7 +19,7 @@ EN ; Main Entry Point for PPS-N National Drug File Updates File Transfer
  I $$GET1^DIQ(57.23,1,9,"I")="Y" Q
  ;
  ; Next line *10001* - Outside of IHS/VA run new code
- I "IV"'[$G(DUZ("AG")) D EN^PSNSYNCNDFFILES
+ I "IV"'[$G(DUZ("AG")) D EN^PSNSYNCNDFFILES QUIT
  ;
  N PSRC,PSOS,PSREMFIL,PSFILE,PSFFND,DIE,DA,DR,LOCDIR,PSUID,PSNDNLDB
  N PSPREV,PSLAST,PSNEW,PSERRMSG,PSSIZE,PSWRKDIR,PSOLDF,PSFDCNT,PSOS2,PRSC,PSNPS,PSOUNXLD,X,XPV
