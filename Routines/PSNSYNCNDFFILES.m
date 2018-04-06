@@ -1,4 +1,4 @@
-PSNSYNCNDFFILES ; OSE/SMH - PPS-N National File Updates File Sync;2018-04-05  1:11 PM
+PSNSYNCNDFFILES ; OSE/SMH - PPS-N National File Updates File Sync;2018-04-06  3:05 PM
  ;;4.0;NATIONAL DRUG FILE;**10001**; 30 Oct 98;Build 53
  ;
 EN ; [Private] Main Entry Point to download files
@@ -18,10 +18,6 @@ EN ; [Private] Main Entry Point to download files
  . N MSG S MSG="Error creating directory "_PSWRKDIR
  . D EN^DDIOL(MSG)
  . D MAILFTP^PSNFTP(0,"n/a",0,MSG)
- ;
- ; Get list of files in that directory, so we can identify are new
- N A,ORIG S A("*")=""
- D LIST^%ZISH(PSWRKDIR,"A","ORIG")
  ;
  ; Check Server
  N PSADDR S PSADDR=$$GET1^DIQ(57.23,1,20)
@@ -45,30 +41,31 @@ EN ; [Private] Main Entry Point to download files
  ;
  ; Sync remote site contents with current folder
  N % S %=$$WGETSYNC^%ZISH(PSADDR,PSREMDIR,PSWRKDIR,"*.DAT*")
- I '% DO  QUIT
+ I % DO  QUIT
  . N MSG S MSG="WGET came back with an error. Error code: "_%
  . D EN^DDIOL(MSG)
  . D MAILFTP^PSNFTP(0,"n/a",0,MSG)
  ;
- ; Find the new files that we got. Put in NEW(F)
- ; This is a boolean operation (ORIG U CURR) 'C ORIG
- ; U is Union; C is Contains
- N A,CURR S A("*")=""
+ ; Find the new files that we got.
+ N A S A("*")=""
  N NEW
- D LIST^%ZISH(PSWRKDIR,"A","CURR")
- N F S F=""
- F  S F=$O(CURR(F)) Q:F=""  I '$D(ORIG(F)) S NEW(F)=""
+ N % S %=$$LIST^%ZISH(PSWRKDIR,"A","NEW")
  ;
  ; For each new file
- N PSREMFIL
+ N PSREMFIL S PSREMFIL=""
  F  S PSREMFIL=$O(NEW(PSREMFIL))  Q:PSREMFIL=""  D
+ . ;
+ . ; If the file was already downloaded, don't do anything
+ . I $D(^PS(57.23,1,4,"G",PSREMFIL)) QUIT
+ . ; 
  . ; - update PPS-N UPDATE CONTROL:RETRIEVAL VERSION (#57.23:8)
+ . ; (NB: We don't use this field in our version of stuff)
  . N PSNEW S PSNEW=+$P(PSREMFIL,"PRV_",2)
  . N DIE,DA,DR
  . S DIE="^PS(57.23,",DA=1,DR="8///"_PSNEW D ^DIE
  . ;
  . ; get size
- . N PSSIZE S PSSIZE=$$SIZE^%ZISH(PSWRKDIR,F)
+ . N PSSIZE S PSSIZE=$$SIZE^%ZISH(PSWRKDIR,PSREMFIL)
  . ;
  . ; email that we are done
  . D MAILFTP^PSNFTP(1,PSREMFIL,PSSIZE,"")
@@ -79,7 +76,4 @@ EN ; [Private] Main Entry Point to download files
  ; Turn off downloading flag
  K DIE,DA,DR
  S DIE="^PS(57.23,",DA=1,DR="9///N" D ^DIE K DIE,DA,DR
- ;
- ; ??
- D NOW^%DTC S DIE="^PS(57.23,1,4,",DA=1,DR="3///"_% D ^DIE K DIE,DA,DR
  Q
