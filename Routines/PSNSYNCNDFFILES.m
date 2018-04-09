@@ -1,4 +1,4 @@
-PSNSYNCNDFFILES ; OSE/SMH - PPS-N National File Updates File Sync;2018-04-06  3:05 PM
+PSNSYNCNDFFILES ; OSE/SMH - PPS-N National File Updates File Sync;2018-04-09  4:35 PM
  ;;4.0;NATIONAL DRUG FILE;**10001**; 30 Oct 98;Build 53
  ;
 EN ; [Private] Main Entry Point to download files
@@ -33,6 +33,12 @@ EN ; [Private] Main Entry Point to download files
  . D EN^DDIOL(MSG)
  . D MAILFTP^PSNFTP(0,"n/a",0,MSG)
  ;
+ ;
+ ; Get list of old files
+ N A S A("*")=""
+ N OLD
+ N % S %=$$LIST^%ZISH(PSWRKDIR,"A","OLD")
+ ;
  ; Checks are okay. Now we need to download.
  ;
  ; Change download status to downloading
@@ -40,16 +46,30 @@ EN ; [Private] Main Entry Point to download files
  S DIE="^PS(57.23,",DA=1,DR="9///Y" D ^DIE
  ;
  ; Sync remote site contents with current folder
+ D EN^DDIOL("Syncing "_PSADDR_"/"_PSREMDIR_" to "_PSWRKDIR)
  N % S %=$$WGETSYNC^%ZISH(PSADDR,PSREMDIR,PSWRKDIR,"*.DAT*")
  I % DO  QUIT
  . N MSG S MSG="WGET came back with an error. Error code: "_%
  . D EN^DDIOL(MSG)
  . D MAILFTP^PSNFTP(0,"n/a",0,MSG)
+ I '% D EN^DDIOL("Sync complete")
  ;
  ; Find the new files that we got.
  N A S A("*")=""
  N NEW
  N % S %=$$LIST^%ZISH(PSWRKDIR,"A","NEW")
+ ;
+ ; Intersect old files with new files; and see if we really have new ones
+ N JUSTDW ; Just downloaded
+ N F S F=""
+ F  S F=$O(NEW(F)) Q:F=""  I '$D(OLD(F)) S JUSTDW(F)=""
+ ;
+ D EN^DDIOL();
+ ;
+ I $D(JUSTDW) D
+ . D EN^DDIOL("These files are new: ")
+ . N F S F="" F  S F=$O(JUSTDW(F)) Q:F=""  D EN^DDIOL(F)
+ E  D EN^DDIOL("No new files have been downloaded")
  ;
  ; For each new file
  N PSREMFIL S PSREMFIL=""
