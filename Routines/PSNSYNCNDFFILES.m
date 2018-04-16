@@ -1,4 +1,4 @@
-PSNSYNCNDFFILES ; OSE/SMH - PPS-N National File Updates File Sync;2018-04-09  4:35 PM
+PSNSYNCNDFFILES ; OSE/SMH - PPS-N National File Updates File Sync;2018-04-16  1:11 PM
  ;;4.0;NATIONAL DRUG FILE;**10001**; 30 Oct 98;Build 53
  ;
 EN ; [Private] Main Entry Point to download files
@@ -48,7 +48,7 @@ EN ; [Private] Main Entry Point to download files
  ; Sync remote site contents with current folder
  D EN^DDIOL("Syncing "_PSADDR_"/"_PSREMDIR_" to "_PSWRKDIR)
  N % S %=$$WGETSYNC^%ZISH(PSADDR,PSREMDIR,PSWRKDIR,"*.DAT*")
- I % DO  QUIT
+ I % DO  DO UNLOCK QUIT
  . N MSG S MSG="WGET came back with an error. Error code: "_%
  . D EN^DDIOL(MSG)
  . D MAILFTP^PSNFTP(0,"n/a",0,MSG)
@@ -93,7 +93,7 @@ EN ; [Private] Main Entry Point to download files
  . ; update the control file
  . D UPDTCTRL^PSNFTP
  ;
- ; Turn off downloading flag
+UNLOCK ; [fall through] Turn off downloading flag
  K DIE,DA,DR
  S DIE="^PS(57.23,",DA=1,DR="9///N" D ^DIE K DIE,DA,DR
  Q
