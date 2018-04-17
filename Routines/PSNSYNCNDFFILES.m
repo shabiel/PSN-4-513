@@ -1,4 +1,4 @@
-PSNSYNCNDFFILES ; OSE/SMH - PPS-N National File Updates File Sync;2018-04-16  1:11 PM
+PSNSYNCNDFFILES ; OSE/SMH - PPS-N National File Updates File Sync;2018-04-17  3:05 PM
  ;;4.0;NATIONAL DRUG FILE;**10001**; 30 Oct 98;Build 53
  ;
 EN ; [Private] Main Entry Point to download files
@@ -10,6 +10,7 @@ EN ; [Private] Main Entry Point to download files
  ; 1. Create Local Directory (no-op if it exists)
  ; 2. Check Remote Site Information
  ; 3. Check Remote Site Path
+ N PSREMFIL S PSREMFIL="n/a"
  ;
  ; Make directory; or else.
  N PSWRKDIR S PSWRKDIR=$$GETD^PSNFTP()
