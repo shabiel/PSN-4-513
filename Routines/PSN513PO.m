@@ -1,4 +1,4 @@
-PSN513PO ;BIR/SJA-Post install routine for patch PSN*4*513 ;2018-04-17  1:36 PM
+PSN513PO ;BIR/SJA-Post install routine for patch PSN*4*513 ;2018-04-17  4:33 PM
  ;;4.0;NATIONAL DRUG FILE;**513,10001**; 30 Oct 98;Build 53
  ; Original code by Department of Veterans Affairs
  ; *10001* changes by OSEHRA/Sam Habiel 2018
@@ -17,6 +17,9 @@ POST ; -- post-install entry
  D SETWS
  S PSNSVR1=$$FILESRVR("PPSN","vaausppsapp21.aac.domain.ext",443)
  D SERVICE("UPDATE_STATUS","PPSN",PSNSVR1) ; add web service to web server
+ ; *10001*
+ D BMES^XPDUTL("Disabling SSH menu option outside of VA/IHS...")
+ D SSHDIS
  Q
  ;
 ADD ; -- add new menu option and update order for PSNMGR & PSN PPS MENU
@@ -192,4 +195,11 @@ DISPERR(PSNARR,PSSMXUA2) ; display error message
  D MSG^DIALOG("AE",.PSNOUT,70,"",PSNARR)
  F PSNI=1:1 Q:$D(PSNOUT(PSNI))=0  W !,$G(PSNOUT(PSNI)) S PSSMXUA2=PSSMXUA2+1
  Q
+ ;
+SSHDIS ; [Private] Disable [PSN PPS SSH KEY MANAGMENT]
+ N AG S AG=$G(DUZ("AG"))
+ I AG="" QUIT
+ I "IV"[AG QUIT
+ D OUT^XPDMENU("PSN PPS SSH KEY MANAGEMENT","Not used outside VA/IHS")
+ QUIT
  ;
