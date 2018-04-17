@@ -1,10 +1,12 @@
-PSN513PO ;BIR/SJA-Post install routine for patch PSN*4*513 ; 19 Jan 2017  1:20 PM
- ;;4.0;NATIONAL DRUG FILE;**513**; 30 Oct 98
+PSN513PO ;BIR/SJA-Post install routine for patch PSN*4*513 ;2018-04-17  1:36 PM
+ ;;4.0;NATIONAL DRUG FILE;**513,10001**; 30 Oct 98;Build 53
+ ; Original code by Department of Veterans Affairs
+ ; *10001* changes by OSEHRA/Sam Habiel 2018
  ;
  Q
 POST ; -- post-install entry
  N II,PSNA,ITEM,PSNSVR1 S PSSMXUA2=1
- ; delete invalid hazard waste entries
+ ; delete invalid hazard waste entries 
  S II=0 F  S II=$O(^PSNDF(50.68,II)) Q:'II  D
  . I $G(^PSNDF(50.68,II,"HAZTODIS2",0))=0 K ^PSNDF(50.68,II,"HAZTODIS2",0)
  ;
@@ -55,7 +57,7 @@ SETWS ;define UPDATE_STATUS web service
  .S WSARR("WEB SERVICE NAME")="PPSN"
  .S WSARR("AVAILABILITY RESOURCE")="?wsdl"
  .S XOBSTAT=$$GENPORT^XOBWLIB(.WSARR)
- .S DIC="^XOB(18.12,",X="PPSN",DIC(0)=X
+ .S DIC="^XOB(18.12,",X="PPSN",DIC(0)="X" ; bug fix *10001*; X was not quoted.
  S PPSWPPSN=+Y K DIC  ;find the PPSN web server IEN
  D BMES^XPDUTL("Beginning UPDATE_STATUS Web Service definition for PPSN web server: ")
  S @XPDGREF@("PSSMLMSG",PSSMXUA2)="Beginning UPDATE_STATUS Web Service definition: " S PSSMXUA2=PSSMXUA2+1
