@@ -1,4 +1,4 @@
-PSNPPSNF ;HP/MJE-PPSN update NDF data ;2018-02-26  2:31 PM
+PSNPPSNF ;HP/MJE-PPSN update NDF data ;2018-04-17  1:17 PM
  ;;4.0;NATIONAL DRUG FILE;**513,10001**; 30 Oct 98;Build 53
  ;Reference to ^%ZISH supported by DBIA #2320
  ;Reference to ^XUTMOPT supported by DBIA #1472
@@ -231,8 +231,8 @@ UPDTCTRL(FILE) ; OSE/SMH *10001* - Update the control file - delegate to UPDTCTR
  N PSREMFIL S PSREMFIL=FILE
  N PSNDNLDB S PSNDNLDB=$$NOW^XLFDT()
  N PSWRKDIR S PSWRKDIR=$$GETD^PSNFTP()
- S PSWRKDIR=$$DF^%ZISH(.PSWRKDIR) ; ** DF is an entry point in the RPMS version of %ZISH **
- N PSSIZE S PSSIZE=$$RETURN^%ZOSV("stat -c%s "_PSWRKDIR_FILE)
+ D DF^%ZISH(.PSWRKDIR) ; ** DF is an entry point in the RPMS version of %ZISH **
+ N PSSIZE S PSSIZE=$$SIZE^%ZISH(PSWRKDIR,FILE)
  D UPDTCTRL^PSNFTP
  QUIT
  ; /OSE/SMH *10001*
