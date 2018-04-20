@@ -1,4 +1,4 @@
-PSN513PO ;BIR/SJA-Post install routine for patch PSN*4*513 ;2018-04-17  4:33 PM
+PSN513PO ;BIR/SJA-Post install routine for patch PSN*4*513 ;2018-04-20  12:15 PM
  ;;4.0;NATIONAL DRUG FILE;**513,10001**; 30 Oct 98;Build 53
  ; Original code by Department of Veterans Affairs
  ; *10001* changes by OSEHRA/Sam Habiel 2018
@@ -13,13 +13,16 @@ POST ; -- post-install entry
  D BMES^XPDUTL("Rebuilding National Drug File Menu....")
  D ADD
  D BMES^XPDUTL("Rebuilding menus complete.")
+ ; *10001* This next line has been moved up as the others apparenly rely on it.
+ S PSNSVR1=$$FILESRVR("PPSN","vaausppsapp21.aac.domain.ext",443)
+ ; /*10001*
  D PPSN
  D SETWS
- S PSNSVR1=$$FILESRVR("PPSN","vaausppsapp21.aac.domain.ext",443)
  D SERVICE("UPDATE_STATUS","PPSN",PSNSVR1) ; add web service to web server
- ; *10001*
+ ; *10001* This is new
  D BMES^XPDUTL("Disabling SSH menu option outside of VA/IHS...")
  D SSHDIS
+ ; /*10001*
  Q
  ;
 ADD ; -- add new menu option and update order for PSNMGR & PSN PPS MENU
