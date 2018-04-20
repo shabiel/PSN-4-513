@@ -1,5 +1,8 @@
-PSNSYNCNDFFILES ; OSE/SMH - PPS-N National File Updates File Sync;2018-04-17  3:05 PM
+PSNSYNCNDFFILES ; OSE/SMH - PPS-N National File Updates File Sync;2018-04-20  11:28 AM
  ;;4.0;NATIONAL DRUG FILE;**10001**; 30 Oct 98;Build 53
+ ;
+ ; Entire routine authored by Sam Habiel (c) 2018.
+ ; See accompanying licnese for usage conditions.
  ;
 EN ; [Private] Main Entry Point to download files
  ; Now now

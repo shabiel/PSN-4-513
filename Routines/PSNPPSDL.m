@@ -1,4 +1,4 @@
-PSNPPSDL ;HP/ART - National Drug File Updates File Download ;2018-04-05  11:12 AM
+PSNPPSDL ;HP/ART - National Drug File Updates File Download ;2018-04-20  11:32 AM
  ;;4.0;NATIONAL DRUG FILE;**513,10001**; 30 Oct 98;Build 53
  ; Original Routine authored by HP/ART for Dept of Veterans Affairs
  ; *10001* modifications by Sam Habiel @ OSEHRA (c) 2018
@@ -132,7 +132,7 @@ CHKD ; check Unix dir and update it if contains control char and other special c
  Q
  ;
 UPDT ; update unix/linux directory, called by PSNPPSDL 
- N UNXLD,UNXLD1 S (UNXLD,UNXLD1)=""
+ N UNXLD,UNXLD1 S (UNXLD,UNXLD1)="" ; *10001* News moved to the appropriate spot
  N DA,DIE,DR
  S UNXLD=$P($G(^PS(57.23,1,0)),"^",4) I UNXLD]"" D
  .S UNXLD1=$$STRIP^PSNPARM(UNXLD) I UNXLD]"",(UNXLD'=UNXLD1) S DIE="^PS(57.23,",DA=1,DR="3////"_UNXLD D ^DIE K DIE,DA,DR
