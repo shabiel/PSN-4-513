@@ -1,7 +1,8 @@
-PSNPPSMG ;HP/MJE-PPSN update NDF data ;2018-02-26  2:33 PM
+PSNPPSMG ;HP/MJE-PPSN update NDF data ;2018-04-20  11:34 AM
  ;;4.0;NATIONAL DRUG FILE;**513,10001**; 30 Oct 98;Build 53
  ;Reference to ^PSDRUG supported by DBIA #2352,#221
- ; *10001* modification made by OSE/SMH
+ ; Original code authored by Department of Veterans Affairs
+ ; *10001* modification made by OSEHRA/Sam Habiel (c) 2018
  ; See https://github.com/shabiel/PSN-4-513
  ;
 MESSAGE ;
@@ -184,8 +185,7 @@ DRGMSG ;
  Q
 UXFSIZE(PSWRKDIR,PSNHLD,PSSIZE) ; get linux file size (OSE/SMH - modified in *10001*)
  S:'$D(PSWRKDIR) PSWRKDIR=$$GETD^PSNFTP()
- D DF^%ZISH(.PSWRKDIR)
- S PSSIZE=$$RETURN^%ZOSV("stat -c%s "_PSWRKDIR_PSNHLD)
+ S PSSIZE=$$SIZE^%ZISH(PSWRKDIR,PSNHLD)
  QUIT
  ; OSE/SMH *10001*
  ;

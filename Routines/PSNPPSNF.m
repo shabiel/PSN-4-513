@@ -1,8 +1,9 @@
-PSNPPSNF ;HP/MJE-PPSN update NDF data ;2018-04-17  1:17 PM
+PSNPPSNF ;HP/MJE-PPSN update NDF data ;2018-04-20  11:35 AM
  ;;4.0;NATIONAL DRUG FILE;**513,10001**; 30 Oct 98;Build 53
  ;Reference to ^%ZISH supported by DBIA #2320
  ;Reference to ^XUTMOPT supported by DBIA #1472
- ; *10001* modification made by OSE/SMH
+ ; Original Routine authored by Department of Veterans Affairs
+ ; *10001* modification made by OSEHRA/Sam Habiel (c) 2018
  ; See https://github.com/shabiel/PSN-4-513
  ;
  ;This routine is used to locate and move PPSN NDF update host files into Cache for processing
@@ -231,7 +232,6 @@ UPDTCTRL(FILE) ; OSE/SMH *10001* - Update the control file - delegate to UPDTCTR
  N PSREMFIL S PSREMFIL=FILE
  N PSNDNLDB S PSNDNLDB=$$NOW^XLFDT()
  N PSWRKDIR S PSWRKDIR=$$GETD^PSNFTP()
- D DF^%ZISH(.PSWRKDIR) ; ** DF is an entry point in the RPMS version of %ZISH **
  N PSSIZE S PSSIZE=$$SIZE^%ZISH(PSWRKDIR,FILE)
  D UPDTCTRL^PSNFTP
  QUIT
