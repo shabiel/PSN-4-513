@@ -277,7 +277,7 @@ these two menu options:
 
 # External Dependencies
 This package relies on `XU*8.0*10002` released as part of the Kernel-GTM project
-(here)[https://github.com/shabiel/Kernel-GTM]. Specifically, the code in %ZISH
+[here](https://github.com/shabiel/Kernel-GTM). Specifically, the code in %ZISH
 which interfaces with `stat`, `wget`, `gzip`, `mv`, `grep`, `file`, `cut` and
 `dos2unix`. These are all Unix shell commands.
 
