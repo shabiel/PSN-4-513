@@ -1,0 +1,11 @@
+All code is in the public domain, with the exception of the following routines,
+portions of which are licensed under Apache 2.0. Authors are listed next to the
+routines:
+
+- PSN513PO - portions modified by Sam Habiel
+- PSNSYNCNDFFILES - All by Sam Habiel
+- PSNPPSNF - portions modified by sam habiel
+- PSNPARM - portions modified by sam habiel
+- PSNFTP - portions modified by sam habiel
+- PSNPPSDL - portions modified by sam habiel
+- PSNPPSMG - portions modified by sam habiel
