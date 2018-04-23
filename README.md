@@ -377,8 +377,8 @@ REQUIRED BUILDS:                               ACTION:
 Satisfy the required builds first. For the OSEHRA provided builds, find them
 here:
 
- * [XU*8.0*10002](https://github.com/shabiel/Kernel-GTM/releases/download/XU-8.0-10002/XU_8-0_10001--XU_8-0_10002-T3.KID)
- * [XOBW*1.0*10001](https://github.com/shabiel/HWSC/releases/download/XOBW-1.0-10001/XOBW_1-0_10001T4.KID)
+ * `[XU*8.0*10002](https://github.com/shabiel/Kernel-GTM/releases/download/XU-8.0-10002/XU_8-0_10001--XU_8-0_10002-T3.KID)`
+ * `[XOBW*1.0*10001](https://github.com/shabiel/HWSC/releases/download/XOBW-1.0-10001/XOBW_1-0_10001T4.KID)`
 
 ## Install Instructions
 Normal KIDS build. Transcript below.
