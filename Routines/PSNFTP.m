@@ -1,7 +1,8 @@
-PSNFTP ;HP/ART - PPS-N National Drug File Updates File Transfer ;2018-04-06  2:39 PM
- ;;4.0;NATIONAL DRUG FILE;**513,10001**; 30 Oct 98;Build 53
+PSNFTP ;HP/ART - PPS-N National Drug File Updates File Transfer ; 6/6/18 7:41am
+ ;;4.0;NATIONAL DRUG FILE;**513,10001**; 30 Oct 98;Build 60
  ; Original routine authored by HP/ART for Department of Veterans Affairs
  ; Changes in *10001* by OSEHRA/Sam Habiel (c) 2018
+ ;
  ;Supported ICRs/IAs
  ;External reference to $$DECRYP^XUSRB1() supported by DBIA 2241
  ;External reference to ^%ZISH supported by DBIA 2320
@@ -13,6 +14,7 @@ PSNFTP ;HP/ART - PPS-N National Drug File Updates File Transfer ;2018-04-06  2:3
  ;External reference to ^XUSEC supported by DBIA #10076
  ;
  ;SAC Exemption For use of Cache function $ZF(-1, was granted 10/23/15 by SACC committee
+ ; OSE/SMH: boo!
  ;
 EN ; Main Entry Point for PPS-N National Drug File Updates File Transfer
  ;If a scheduled job initiates the PSNSCJOB=1 will be defined.
@@ -415,7 +417,7 @@ GETD() ; get the right directory based on OS type
  N CDIR,PSOSX S CDIR=""
  S PSOSX=$$OS^%ZOSV()
  I PSOSX["VMS" S CDIR=$$GET1^DIQ(57.23,1,1)
- I PSOSX["UNIX" S CDIR=$$GET1^DIQ(57.23,1,3)
+ I PSOSX["UNIX"!(PSOSX["NT") S CDIR=$$GET1^DIQ(57.23,1,3) ; *10001* OSE/SMH - Added Windows as a supported OS.
  Q CDIR
  ;
 UPDTCTRL ;
