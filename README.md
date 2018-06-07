@@ -14,16 +14,21 @@ for mkdir, stat, and the like have been encapsulated into the new `%ZISH`. The
 post-install has been partially, but not completely fixed. See the sample
 installation below to see what to expect.
 
+This patch adds support for Cache/Windows, as the VA code does not fully support it.
+
 # Download
-[Here](https://github.com/shabiel/PSN-4-513/releases/download/PSN-4.0-10001/PSN-4.0-10001T4.KID)
+[Here](https://github.com/shabiel/PSN-4-513/releases/download/PSN-4.0-10001/PSN-4.0-10001.KID)
+
+# Install
+See section below.
 
 # External Documentation
 [VDL](https://www.va.gov/vdl/application.asp?appid=89)
 
 # Notes regarding port
 New code in `XU*8.0*10002` was done to encapsulate all vendor specific calls
-into Kernel routines. The new code was done for GT.M; no equivalent for Cache
-currently exists. The following are the new entry points needed in `ZISHONT`:
+into Kernel routines. The following are the new entry points needed in `%ZISH`
+to support this patch:
 
  * `$$MKDIR^%ZISH`
  * `$$SIZE^%ZISH`
@@ -89,7 +94,7 @@ Pharmacy Product System-National(PPS-N) Site Parameters
  1.  PPS-N Install Version       : 0
  2.  PPS-N Download Version      : 0
  3. *Open VMS Local Directory    : 
- 4. *Unix/Linux Local Directory  : 
+ 4. *Unix/NT Local Directory     : 
  5. *Remote Server Address       : vaausmocftpprd01.aac.domain.ext
  6. *Remote Server Directory     : 
  7. *Remote SFTP Username        : presftp
@@ -113,7 +118,7 @@ Pharmacy Product System-National(PPS-N) Site Parameters
  1.  PPS-N Install Version       : 0
  2.  PPS-N Download Version      : 0
  3. *Open VMS Local Directory    : 
- 4. *Unix/Linux Local Directory  : /home/vxvista/dat-files/
+ 4. *Unix/NT Local Directory     : /home/vxvista/dat-files/
  5. *Remote Server Address       : foia-vista.osehra.org
  6. *Remote Server Directory     : Patches_By_Application/PSN-NATIONAL DRUG FILE
  (NDF)/PPS_DATS/
@@ -129,10 +134,14 @@ Pharmacy Product System-National(PPS-N) Site Parameters
 ```
 
 4 needs to be a directory where you have write authority; if you need to create
-the directory, you need execute authority over the containing directory.
+the directory, you need execute authority over the containing directory. A Windows/NT
+directory format is accepted as well. e.g. `D:\HFS\pps_dat\`.
 
 5 and 6 are the parts of an https url that will get you to the DAT files. In
-this case, they represent `https://foia-vista.osehra.org/Patches_By_Application/PSN-NATIONAL%20DRUG%20FILE%20(NDF)/PPS_DATS/`
+this case, they represent `https://foia-vista.osehra.org/Patches_By_Application/PSN-NATIONAL%20DRUG%20FILE%20(NDF)/PPS_DATS/`.
+If you plan to host the dat files yourself, that obviously needs to change. If you plan to self host, make sure that you
+use an https server with a valid TLS certificate. You may use a self-signed certificate as long as you add it to the Windows
+or Linux trust stores.
 
 Once you are done, you can come back to the menu and run MD:
 
@@ -277,9 +286,12 @@ these two menu options:
 
 # External Dependencies
 This package relies on `XU*8.0*10002` released as part of the Kernel-GTM project
-[here](https://github.com/shabiel/Kernel-GTM). Specifically, the code in %ZISH
-which interfaces with `stat`, `wget`, `gzip`, `mv`, `grep`, `file`, `cut` and
-`dos2unix`. These are all Unix shell commands.
+[here](https://github.com/shabiel/Kernel-GTM). 
+
+On GT.M or Cache on Linux and Cygwin, these are the external dependencies:
+`stat`, `wget`, `gzip`, `mv`, `grep`, `file`, `cut` and `dos2unix`.
+
+On Cache/Windows, these are the external dependencies: `mkdir` and `wget`.
 
 # Internal Depedencies
 This package uses a lot of Kernel, Mailman, and Fileman APIs. A listing can
@@ -381,6 +393,20 @@ here:
  * [XOBW\*1.0\*10001](https://github.com/shabiel/HWSC/releases/download/XOBW-1.0-10001/XOBW_1-0_10001T4.KID)
 
 ## Install Instructions
+
+### ### WARNING ###
+XPDUTL has an issue with checking for dependencies > 3 digits long. You will need to edit
+PATCH+1 from
+```
+Q:X'?1.4UN1"*"1.2N1"."1.2N.1(1"V",1"T").2N1"*"1.3N 0
+```
+to
+```
+Q:X'?1.4UN1"*"1.2N1"."1.2N.1(1"V",1"T").2N1"*"1.5N 0
+```
+in order for the dependency check to pass.
+
+### Installation
 Normal KIDS build. Transcript below.
 ```
 [vxvista@d9361be85af8 tmp]$ mumps -dir
@@ -511,13 +537,14 @@ See usage instructions
 # Checksums
 ```
 Routine         Old         New        Patch List
+PSN513PO        n/a      78978582    **513,10001**
 PSNCFINQ        n/a      51923740    **513** <<<No 10001
 PSNCLEAN        n/a      38230094    **117,176,513** <<<No 10001
-PSNFTP          n/a      225158032   **513,10001**
+PSNFTP          n/a      229353283   **513,10001**
 PSNFTP2         n/a      136877012   **513** <<<No 10001
 PSNFTP3         n/a       8030989    **513** <<<No 10001
 PSNOSKEY        n/a      85865292    **513** <<<No 10001
-PSNPARM         n/a      56524412    **513,10001**
+PSNPARM         n/a      56445906    **513,10001**
 PSNPPSCL        n/a      48598918    **513** <<<No 10001
 PSNPPSDL        n/a      32190963    **513,10001**
 PSNPPSI1        n/a       5027313    **513** <<<No 10001
@@ -533,15 +560,14 @@ PSNPPSNR        n/a      98892215    **513** <<<No 10001
 PSNPPSNU        n/a      51690215    **513** <<<No 10001
 PSNPPSNV        n/a      179018356   **513** <<<No 10001
 PSNPPSNW        n/a      35107109    **513** <<<No 10001
-PSNSYNCNDFFILES   n/a    11807574    **10001**
+PSNSYNCNDFFILES   n/a    11802559    **10001**
 PSNVCR          n/a      169194760   **513** <<<No 10001
 PSNVCR1         n/a      106479512   **513** <<<No 10001
 PSNVCR2         n/a      207861885   **513** <<<No 10001
 ```
 
 # Test Sites
-None
+None.
 
 # Future Work
-Enhancements in ZISHGUX need to be ported to ZISHONT. I won't personally be
-doing that.
+None.
