@@ -42,6 +42,23 @@ to support this patch:
  * Manual Install of NDF Update file [PSN PPS MANUAL INSTALL]
  * PPS-N Site Parameters (Enter/Edit) [PSN PPS PARAM]
 
+# Conversion table between KIDS PSN\*4.0 Patches and PPS DAT files
+
+| KIDS patch | Date     | PPS DAT No | PPS DAT filename    |
+| ---------- | -------- | ---------- | ------------------- |
+| 526-528    | Jul 2017 | n/a        | n/a                 |
+| 529-531    | Aug 2017 | n/a        | n/a                 |
+| 532-534    | Sep 2017 | 1          | PSS\_0PRV\_1NEW.DAT |
+| 535-537    | Oct 2017 | 2          | PSS\_1PRV\_2NEW.DAT |
+| 538,542-543| Nov 2017 | 3          | PSS\_2PRV\_3NEW.DAT |
+| 544-546    | Dec 2017 | 4          | PSS\_3PRV\_4NEW.DAT |
+| 547-549    | Jan 2018 | 5          | PSS\_4PRV\_5NEW.DAT |
+| 550-552    | Feb 2018 | 6          | PSS\_5PRV\_6NEW.DAT |
+| 553-555    | Mar 2018 | 7          | PSS\_6PRV\_7NEW.DAT |
+| 556-558    | Apr 2018 | 8          | PSS\_7PRV\_8NEW.DAT |
+| 559-560,562| May 2018 | 9          | PSS\_8PRV\_9NEW.DAT |
+| n/a        | Jun 2018 | 10         | PSS\_9PRV\_10NEW.DAT|
+
 # Package Usage
 After installation, give the users who will run the pharmacy updates the key
 `PSN PPS ADMIN` and in addition, the key `PSN PPS COORD` to the user who will
