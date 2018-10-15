@@ -59,6 +59,8 @@ to support this patch:
 | 559-560,562| May 2018 | 9          | PSS\_8PRV\_9NEW.DAT |
 | n/a        | Jun 2018 | 10         | PSS\_9PRV\_10NEW.DAT|
 
+If you are not starting from the first one, you need to edit the site parameters (field `PPS-N Install Version`) to put in the corresponding version of the PPS DAT file in order for the next update to be done properly.
+
 # Package Usage
 After installation, give the users who will run the pharmacy updates the key
 `PSN PPS ADMIN` and in addition, the key `PSN PPS COORD` to the user who will
@@ -407,7 +409,7 @@ Satisfy the required builds first. For the OSEHRA provided builds, find them
 here:
 
  * [XU\*8.0\*10002](https://github.com/shabiel/Kernel-GTM/releases/download/XU-8.0-10002/XU_8-0_10001--XU_8-0_10002.KID)
- * [XOBW\*1.0\*10001](https://github.com/shabiel/HWSC/releases/download/XOBW-1.0-10001/XOBW_1-0_10001T4.KID)
+ * [XOBW\*1.0\*10001](https://github.com/shabiel/HWSC/releases/download/XOBW-1.0-10001/XOBW_1-0_10001T6.KID)
 
 ## Install Instructions
 
