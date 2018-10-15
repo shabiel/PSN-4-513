@@ -128,7 +128,21 @@ Pharmacy Product System-National(PPS-N) Site Parameters
 ```
 
 You need to edit 4, 5, 6 in order for the system to run. In order to edit, you
-need the key `PSN PPS COORD`. Here's the config after the edits:
+need the key `PSN PPS COORD`. 
+
+If you are not starting from the first file, and are transitioning after a 
+specific NDF patch,  one, you need to edit the site parameters 
+(field `PPS-N Install Version`) to put in the corresponding version of the PPS 
+DAT file in order for the next update to be done properly. For example, if you
+last installed `PSN\*4.0\*555`, you need to change `PPS-N Install Version` to 7.
+THIS STEP IS REALLY IMPORTANT TO PREVENT DATA CORRUPTION. THERE ARE NO OTHER
+CHECKS THAT GET PERFORMED.
+
+If you are not planning to download the files from a remote server, you do not
+need to edit 5 and 6. This will be the case if you get the files directly from
+First DataBank and you deposit them directly on your server.
+
+Here's the config after the edits:
 
 ```
 Pharmacy Product System-National(PPS-N) Site Parameters
@@ -162,7 +176,7 @@ If you plan to host the dat files yourself, that obviously needs to change. If y
 use an https server with a valid TLS certificate. You may use a self-signed certificate as long as you add it to the Windows
 or Linux trust stores.
 
-Once you are done, you can come back to the menu and run MD:
+Once you are done, you can come back to the menu and run MD (ONLY IF YOU WILL DOWNLOAD THE FILES FROM THE REMOTE SERVER--DON'T DO THIS IF YOU GET THE FILES SOME OTHER WAY AND DEPOSIT THEM ON YOUR SERVER. IF THAT'S THE CASE, SKIP TO MI STEP (next step)):
 
 ```
 Select PPS-N Menu <TEST ACCOUNT> Option: MD  Manual Download of NDF Update file
@@ -190,7 +204,8 @@ PPS_7PRV_8NEW.DAT
 We just downloaded 8 files! If you get this error: `Error creating directory ...`,
 you need to check that you have write permissions to the directory.
 
-NDF updates can be installed now using MI:
+NDF updates can be installed now using MI. If you manually put the files in a folder
+rather than downloaded them, it will find them and ask you to install them.
 
 ```
 Select PPS-N Menu <TEST ACCOUNT> Option: mi  Manual Install of NDF Update file
