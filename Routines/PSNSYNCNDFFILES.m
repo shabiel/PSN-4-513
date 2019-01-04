@@ -1,4 +1,4 @@
-PSNSYNCNDFFILES ; OSE/SMH - PPS-N National File Updates File Sync;2018-04-20  11:28 AM
+PSNSYNCNDFFILES ; OSE/SMH - PPS-N National File Updates File Sync;2019-01-03  4:47 PM
  ;;4.0;NATIONAL DRUG FILE;**10001**; 30 Oct 98;Build 53
  ;
  ; Entire routine authored by Sam Habiel (c) 2018.
@@ -68,7 +68,7 @@ EN ; [Private] Main Entry Point to download files
  N F S F=""
  F  S F=$O(NEW(F)) Q:F=""  I '$D(OLD(F)) S JUSTDW(F)=""
  ;
- D EN^DDIOL();
+ D EN^DDIOL()
  ;
  I $D(JUSTDW) D
  . D EN^DDIOL("These files are new: ")
