@@ -16,17 +16,35 @@ installation below to see what to expect.
 
 This patch adds support for Cache/Windows, as the VA code does not fully support it.
 
+Patch PSN\*4\*10002 has been created to apply an overlay over PSN\*4.0\*563 and PSN\*4.0\*565.
+
 # Download
-[Here](https://github.com/shabiel/PSN-4-513/releases/download/PSN-4.0-10001/PSN-4.0-10001.KID)
+ * [PSN\*4.0\*10001](https://github.com/shabiel/PSN-4-513/releases/download/PSN-4.0-10001/PSN-4.0-10001.KID)
+ * [PSN\*4.0\*10002](https://github.com/shabiel/PSN-4-513/releases/download/PSN-4.0-10002/PSN_4-0_10002.KID)
+
+or [Multibuild]( https://github.com/shabiel/PSN-4-513/releases/download/PSN-4.0-10002/PSN_4-0_10002-MB.KID) (includes PSN\*4.0\*513, PSN\*4.0\*10001, PSN\*4.0\*563, PSN\*4.0\*565, PSN\*4.0\*10002)
 
 # Install
-See section below.
+Here is the current recommended install order (all builds are safe to re-install):
+
+## Pre-Install Requisites
+ 1. [XU\*8.0\*10001/10002/10004](https://github.com/shabiel/Kernel-GTM/releases/download/XU-8.0-10004/XU-8-10001-10002-10004.KID)
+ 2. [XOBW\*1.0\*10001](https://github.com/shabiel/HWSC/releases/download/XOBW-1.0-10001/XOBW_1-0_10001T6.KID)
+
+## Install
+ 1. [PSN\*4.0\*513](https://foia-vista.osehra.org/Patches_By_Application/PSN-NATIONAL%20DRUG%20FILE%20(NDF)/PSN-4_SEQ-531_PAT-513.kids)
+ 2. [PSN\*4.0\*10001](https://github.com/shabiel/PSN-4-513/releases/download/PSN-4.0-10001/PSN-4.0-10001.KID)
+ 3. [PSN\*4.0\*563](https://foia-vista.osehra.org/Patches_By_Application/PSN-NATIONAL%20DRUG%20FILE%20(NDF)/PSN-4_SEQ-545_PAT-563.kids)
+ 4. [PSN\*4.0\*565](https://foia-vista.osehra.org/Patches_By_Application/PSN-NATIONAL%20DRUG%20FILE%20(NDF)/PSN-4_SEQ-547_PAT-565.kids)
+ 5. [PSN\*4.0\*10002](https://github.com/shabiel/PSN-4-513/releases/download/PSN-4.0-10002/PSN_4-0_10002.KID)
+
+The [Multibuild]( https://github.com/shabiel/PSN-4-513/releases/download/PSN-4.0-10002/PSN_4-0_10002-MB.KID) includes all these patches.
 
 # External Documentation
 [VDL](https://www.va.gov/vdl/application.asp?appid=89)
 
 # Notes regarding port
-New code in `XU*8.0*10002` was done to encapsulate all vendor specific calls
+New code in `XU\*8.0\*10002` was done to encapsulate all vendor specific calls
 into Kernel routines. The following are the new entry points needed in `%ZISH`
 to support this patch:
 
@@ -59,7 +77,9 @@ to support this patch:
 | 559-560,562| May 2018 | 9          | PSS\_8PRV\_9NEW.DAT |
 | n/a        | Jun 2018 | 10         | PSS\_9PRV\_10NEW.DAT|
 
-If you are not starting from the first one, you need to edit the site parameters (field `PPS-N Install Version`) to put in the corresponding version of the PPS DAT file in order for the next update to be done properly.
+*If you are not starting from the first one, you need to edit the site
+parameters (field `PPS-N Install Version`) to put in the corresponding version
+of the PPS DAT file in order for the next update to be done properly.*
 
 # Package Usage
 After installation, give the users who will run the pharmacy updates the key
@@ -418,29 +438,34 @@ REQUIRED BUILDS:                               ACTION:
    XOBW*1.0*10001                                 Don't install, leave global
 ```
 
-# Installation Instructions
-## Pre-install Instructions
-Satisfy the required builds first. For the OSEHRA provided builds, find them
-here:
-
- * [XU\*8.0\*10002](https://github.com/shabiel/Kernel-GTM/releases/download/XU-8.0-10002/XU_8-0_10001--XU_8-0_10002.KID)
- * [XOBW\*1.0\*10001](https://github.com/shabiel/HWSC/releases/download/XOBW-1.0-10001/XOBW_1-0_10001T6.KID)
-
-## Install Instructions
-
-### ### WARNING ###
-XPDUTL has an issue with checking for dependencies > 3 digits long. You will need to edit
-PATCH+1 from
 ```
-Q:X'?1.4UN1"*"1.2N1"."1.2N.1(1"V",1"T").2N1"*"1.3N 0
-```
-to
-```
-Q:X'?1.4UN1"*"1.2N1"."1.2N.1(1"V",1"T").2N1"*"1.5N 0
-```
-in order for the dependency check to pass.
+PACKAGE: PSN*4.0*10002     Jan 07, 2019 9:47 am                   PAGE 1
+-------------------------------------------------------------------------------
+TYPE: SINGLE PACKAGE                               TRACK NATIONALLY: YES
+NATIONAL PACKAGE: NATIONAL DRUG FILE             ALPHA/BETA TESTING: NO
 
-### Installation
+DESCRIPTION:
+This build is an OSEHRA over lay to restore changes done by PSN*4.0*10001
+after patches PSN*4.0*563 and PSN*4.0*565 are installed. It restores the
+changes in routines PSNPPSMG and PSNPPSDL.
+
+ENVIRONMENT CHECK:                               DELETE ENV ROUTINE:
+ PRE-INIT ROUTINE:                          DELETE PRE-INIT ROUTINE:
+POST-INIT ROUTINE:                         DELETE POST-INIT ROUTINE:
+PRE-TRANSPORT RTN:
+
+ROUTINE:                                       ACTION:
+   PSNPPSDL                                       SEND TO SITE
+   PSNPPSMG                                       SEND TO SITE
+
+INSTALL QUESTIONS:
+
+REQUIRED BUILDS:                               ACTION:
+   PSN*4.0*563                                    Don't install, leave global
+   PSN*4.0*565                                    Don't install, leave global
+```
+
+# Installation Sample for PSN\*4.0\*10001
 Normal KIDS build. Transcript below.
 ```
 [vxvista@d9361be85af8 tmp]$ mumps -dir
@@ -569,6 +594,7 @@ Disabling SSH menu option outside of VA/IHS...
 See usage instructions
 
 # Checksums
+## Checksums for PSN\*4.0\*10001
 ```
 Routine         Old         New        Patch List
 PSN513PO        n/a      78978582    **513,10001**
@@ -598,6 +624,13 @@ PSNSYNCNDFFILES   n/a    11802559    **10001**
 PSNVCR          n/a      169194760   **513** <<<No 10001
 PSNVCR1         n/a      106479512   **513** <<<No 10001
 PSNVCR2         n/a      207861885   **513** <<<No 10001
+```
+
+## Checksums for PSN\*4.0\*10002
+```
+Routine         Old         New        Patch List
+PSNPPSDL        n/a      34022039    **513,563,10001,10002**
+PSNPPSMG        n/a      88177088    **513,565,10001,10002**
 ```
 
 # Test Sites
