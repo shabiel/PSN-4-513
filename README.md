@@ -83,9 +83,9 @@ of the PPS DAT file in order for the next update to be done properly.*
 
 # Package Usage
 After installation, give the users who will run the pharmacy updates the key
-`PSN PPS ADMIN` and in addition, the key `PSN PPS COORD` to the user who will
-set-up the intial parameters for the system.  After key allocation, the users
-will see the PPS-N menu on the [NDFMGR] menu:
+`PSN PPS ADMIN` and `PSNMGR`. In addition, give the key `PSN PPS COORD` to the
+user who will set-up the intial parameters for the system. After key
+allocation, the users will see the PPS-N menu on the [PSNMGR] menu:
 
 ```
                       WELCOME TO THE NATIONAL DRUG FILE 
@@ -191,12 +191,17 @@ the directory, you need execute authority over the containing directory. A Windo
 directory format is accepted as well. e.g. `D:\HFS\pps_dat\`.
 
 5 and 6 are the parts of an https url that will get you to the DAT files. In
-this case, they represent `https://foia-vista.osehra.org/Patches_By_Application/PSN-NATIONAL%20DRUG%20FILE%20(NDF)/PPS_DATS/`.
-If you plan to host the dat files yourself, that obviously needs to change. If you plan to self host, make sure that you
-use an https server with a valid TLS certificate. You may use a self-signed certificate as long as you add it to the Windows
-or Linux trust stores.
+this case, they represent
+`https://foia-vista.osehra.org/Patches_By_Application/PSN-NATIONAL%20DRUG%20FILE%20(NDF)/PPS_DATS/`.
+If you plan to host the dat files yourself, that obviously needs to change. If
+you plan to self host, make sure that you use an https server with a valid TLS
+certificate. You may use a self-signed certificate as long as you add it to the
+Windows or Linux trust stores.
 
-Once you are done, you can come back to the menu and run MD (ONLY IF YOU WILL DOWNLOAD THE FILES FROM THE REMOTE SERVER--DON'T DO THIS IF YOU GET THE FILES SOME OTHER WAY AND DEPOSIT THEM ON YOUR SERVER. IF THAT'S THE CASE, SKIP TO MI STEP (next step)):
+Once you are done, you can come back to the menu and run MD (ONLY IF YOU WILL
+DOWNLOAD THE FILES FROM THE REMOTE SERVER--DON'T DO THIS IF YOU GET THE FILES
+SOME OTHER WAY AND DEPOSIT THEM ON YOUR SERVER. IF THAT'S THE CASE, SKIP TO MI
+STEP (next step)):
 
 ```
 Select PPS-N Menu <TEST ACCOUNT> Option: MD  Manual Download of NDF Update file
@@ -223,6 +228,18 @@ PPS_7PRV_8NEW.DAT
 
 We just downloaded 8 files! If you get this error: `Error creating directory ...`,
 you need to check that you have write permissions to the directory.
+
+If you get asked repeatedly who to mail something to like this...
+```
+Send mail to: USER,ONE//   USER,ONE
+Select basket to send to: IN//
+And Send to:
+Send mail to: USER,ONE//
+```
+... it means that you have no users in your system with PSNMGR key, which would
+happen only in a FOIA system as typically there are users with the PSNMGR key. It's
+okay to enter and enter through it, but you should allocate PSNMGR to the user
+you are using to perform these steps.
 
 NDF updates can be installed now using MI. If you manually put the files in a folder
 rather than downloaded them, it will find them and ask you to install them.
