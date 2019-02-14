@@ -1,5 +1,5 @@
-PSNPPSNF ;HP/MJE-PPSN update NDF data ;2018-04-20  11:35 AM
- ;;4.0;NATIONAL DRUG FILE;**513,10001**; 30 Oct 98;Build 53
+PSNPPSNF ;HP/MJE-PPSN update NDF data ;2019-02-12  5:22 PM
+ ;;4.0;NATIONAL DRUG FILE;**513,10001,100002**; 30 Oct 98;Build 53
  ;Reference to ^%ZISH supported by DBIA #2320
  ;Reference to ^XUTMOPT supported by DBIA #1472
  ; Original Routine authored by Department of Veterans Affairs
@@ -46,7 +46,7 @@ FIND ;Get list of files, quit if flag set to disable update function
  S A1("PPS_*")="",(PSNFND,PSNFLG,QUIT2,PSRUNCNT)=0,COMM=1
  I $D(^TMP("PSN PPSN READ",$J)) K ^TMP("PSN PPSN READ",$J)
  S Y=$$LIST^%ZISH($$GETD^PSNFTP(),$NA(A1),$NA(B2))
- S I="" F  S I=$O(B2(I)) Q:I=""  S B1(99999999+(+$P(I,"_",2)))=I
+ S I="" F  S I=$O(B2(I)) Q:I=""  I I?1"PPS_"1.N1"PRV_"1.N1"NEW.DAT".1"s" S B1(99999999+(+$P(I,"_",2)))=I
  K B2
 CKDIR ;
  G EXIT:'$D(B1)
