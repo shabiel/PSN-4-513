@@ -1,7 +1,8 @@
-PSNPPSDL ;HP/ART - National Drug File Updates File Download ;2019-01-04  1:52 PM
- ;;4.0;NATIONAL DRUG FILE;**513,563,10001,10002**; 30 Oct 98;Build 53
+PSNPPSDL ;HP/ART - National Drug File Updates File Download ;2019-02-14  10:43 AM
+ ;;4.0;NATIONAL DRUG FILE;**513,10001,563,10002**; 30 Oct 98;Build 2
  ; Original Routine authored by HP/ART for Dept of Veterans Affairs
  ; *10001*/*10002* modifications by Sam Habiel @ OSEHRA (c) 2018
+ ; *10002* does not introduce any changes. It restores 10001 changes over 563.
  ;
  ;Reference to ^XUSEC( supported by IA #10076
  ;
@@ -118,7 +119,7 @@ LEGACY() ;check legacy update file processing parameter
  Q PSNF
  ;
 CHKD ; check Unix dir and update it if contains control char and other special characters
- ; *10001* Replace with calls to ^%ZISH
+ ; *10001*/(restored by *10002*) Replace with calls to ^%ZISH
  I $$OS^%ZOSV()'="UNIX" Q
  D UPDT
  ; S UNXLD=$$GETD^PSNFTP()  *10001*
@@ -128,7 +129,7 @@ CHKD ; check Unix dir and update it if contains control char and other special c
  Q
  ;
 UPDT ; update unix/linux directory, called by PSNPPSDL
- N UNXLD,UNXLD1 S (UNXLD,UNXLD1)="" ; *10001* NEWs moved to the appropriate spot
+ N UNXLD,UNXLD1 S (UNXLD,UNXLD1)="" ; *10001*/(restored by *10002*) NEWs moved to the appropriate spot
  N DA,DIE,DR
  S UNXLD=$P($G(^PS(57.23,1,0)),"^",4) I UNXLD]"" D
  .S UNXLD1=$$STRIP^PSNPARM(UNXLD) I UNXLD]"",(UNXLD'=UNXLD1) S DIE="^PS(57.23,",DA=1,DR="3////"_UNXLD D ^DIE K DIE,DA,DR

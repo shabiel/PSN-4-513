@@ -1,8 +1,9 @@
-PSNPPSMG ;HP/MJE-PPSN update NDF data ;2019-01-04  1:46 PM
- ;;4.0;NATIONAL DRUG FILE;**513,565,10001,10002**; 30 Oct 98;Build 53
+PSNPPSMG ;HP/MJE-PPSN update NDF data ;2019-02-14  10:41 AM
+ ;;4.0;NATIONAL DRUG FILE;**513,10001,565,10002**; 30 Oct 98;Build 2
  ;Reference to ^PSDRUG supported by DBIA #2352,#221
  ; Original code authored by Department of Veterans Affairs
  ; *10001*/*10002* modification made by OSEHRA/Sam Habiel (c) 2018-2019
+ ; *10002* does not introduce any changes. It restores 10001 changes over 565.
  ; See https://github.com/shabiel/PSN-4-513
  ;
 MESSAGE ;
@@ -183,11 +184,11 @@ DRGMSG ;
  D ^XMD
  K DIE,DR
  Q
-UXFSIZE(PSWRKDIR,PSNHLD,PSSIZE) ; get linux file size (OSE/SMH - modified in *10001*)
+UXFSIZE(PSWRKDIR,PSNHLD,PSSIZE) ; get linux file size (OSE/SMH - modified in *10001*/restored in *10002*)
  S:'$D(PSWRKDIR) PSWRKDIR=$$GETD^PSNFTP()
  S PSSIZE=$$SIZE^%ZISH(PSWRKDIR,PSNHLD)
  QUIT
- ; OSE/SMH *10001*
+ ; OSE/SMH *10001*/*10002*
  ;
 TRNS(PSNFILE,IEN,PSNFIELD) ; get the label of file/field
  N PSNF,FILE,FILENM,FIELD,PSNARR,FLD,FIELDX
