@@ -9,14 +9,20 @@ several shortcomings:
  * Inability to apply downloaded patches if they were downloaded outside of VISTA.
 
 The new patch, `PSN*4*10001`, uses code in `XU*8.0*10002` in `%ZISH` that
-allows for syncing remote https directories via `wget`. In addition the calls
-for mkdir, stat, and the like have been encapsulated into the new `%ZISH`. The
+allows for syncing remote https directories via `wget. In addition the calls
+for mkdir, stat, and the like have been encapsulated into the new %ZISH. The
 post-install has been partially, but not completely fixed. See the sample
 installation below to see what to expect.
 
 This patch adds support for Cache/Windows, as the VA code does not fully support it.
 
 Patch PSN\*4\*10002 has been created to apply an overlay over PSN\*4.0\*563 and PSN\*4.0\*565.
+PSN*\4\*10002 also includes a fix from CRH/David Whitten which prevents the loading of similar
+looking files in the directory. This--combined with a defect in the original software that was
+fixed in PSN\*4.0\*565--can result in your old GCNSEQNOs being deleted.
+
+PSN\*4.0\*565 is an important patch if you use FDB with VistA. If you don't install it, GCNSEQNOs
+apparently get deleted.
 
 # Download
  * [PSN\*4.0\*10001](https://github.com/shabiel/PSN-4-513/releases/download/PSN-4.0-10001/PSN-4.0-10001.KID)
@@ -38,7 +44,7 @@ Here is the current recommended install order (all builds are safe to re-install
  4. [PSN\*4.0\*565](https://foia-vista.osehra.org/Patches_By_Application/PSN-NATIONAL%20DRUG%20FILE%20(NDF)/PSN-4_SEQ-547_PAT-565.kids)
  5. [PSN\*4.0\*10002](https://github.com/shabiel/PSN-4-513/releases/download/PSN-4.0-10002/PSN_4-0_10002.KID)
 
-The [Multibuild]( https://github.com/shabiel/PSN-4-513/releases/download/PSN-4.0-10002/PSN_4-0_10002-MB.KID) includes all these patches.
+The [Multibuild](https://github.com/shabiel/PSN-4-513/releases/download/PSN-4.0-10002/PSN_4-0_10002-MB.KID) includes all these patches.
 
 # External Documentation
 [VDL](https://www.va.gov/vdl/application.asp?appid=89)
@@ -79,7 +85,9 @@ to support this patch:
 
 *If you are not starting from the first one, you need to edit the site
 parameters (field `PPS-N Install Version`) to put in the corresponding version
-of the PPS DAT file in order for the next update to be done properly.*
+of the PPS DAT file in order for the next update to be done properly. E.g., if
+you have installed all the KIDS patches up to the very last one, then you should
+set the field for `PPS-N Install Version` to 9.*
 
 # Package Usage
 After installation, give the users who will run the pharmacy updates the key
@@ -147,14 +155,16 @@ Pharmacy Product System-National(PPS-N) Site Parameters
 -------------------------------------------------------------------------------
 ```
 
-You need to edit 4, 5, 6 in order for the system to run. In order to edit, you
-need the key `PSN PPS COORD`. 
+You need to edit 1, 4, 5, 6 in order for the system to run. In order to edit, you
+need the key `PSN PPS COORD. 
 
 If you are not starting from the first file, and are transitioning after a 
 specific NDF patch,  one, you need to edit the site parameters 
 (field `PPS-N Install Version`) to put in the corresponding version of the PPS 
 DAT file in order for the next update to be done properly. For example, if you
 last installed `PSN\*4.0\*555`, you need to change `PPS-N Install Version` to 7.
+If you installed all available KIDS patches and now are switching, then you need
+to set `PPS-N Install Version` to 9.
 THIS STEP IS REALLY IMPORTANT TO PREVENT DATA CORRUPTION. THERE ARE NO OTHER
 CHECKS THAT GET PERFORMED.
 
