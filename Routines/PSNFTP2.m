@@ -1,5 +1,5 @@
 PSNFTP2 ;HP/ART - PPS-N National Drug File Updates File Transfer ;09/25/2015
- ;;4.0;NATIONAL DRUG FILE;**513**; 30 Oct 98
+ ;;4.0;NATIONAL DRUG FILE;**513,573**; 30 Oct 98;Build 6
  ;Supported ICRs/IAs
  ;External reference to ^%ZISH supported by DBIA 2320
  ;External reference to ^%ZISUTL supported by DBIA 2119
@@ -251,7 +251,7 @@ VMSDEL(PSRC,PSDIR,PSFILE) ;Delete Local Host File
  Q
  ;
 SAVEKEYS(LOCDIR) ; Saves Key to local directory
- ;Input: LOCDIR - Local directory where the keys should be saved to
+ ;Input: LOCDIR - Local directory where the keys should be saved to      
  N WLN,XPV
  I $$GET1^DIQ(57.23,1,39,"I")="SSH2" D
  . ;Saving the Private SSH Key
@@ -286,20 +286,23 @@ SAVEKEYS(LOCDIR) ; Saves Key to local directory
  Q
 DIREXIST(DIR) ; Returns whether the Linux Directory for sFTP already exists
  ;Input: DIR - Linux Directory name to be checked
- ;
- N DIREXIST
+ ;*573 Added condition check for IRIS
+ N DIREXIST,PSNVER
+ S PSNVER=$$UP^XLFSTR($$VERSION^%ZOSV(1))
  I DIR="" Q 0
- I $$OS^%ZOSV()'="UNIX",($$UP^XLFSTR($$VERSION^%ZOSV(1))'["CACHE") Q 0
+ I $$OS^%ZOSV()'="UNIX" Q 0
+ I PSNVER'["CACHE",PSNVER'["IRIS" Q 0
  I $E(DIR,$L(DIR))="/" S $E(DIR,$L(DIR))=""
  X "S DIREXIST=$ZSEARCH(DIR)"
  Q $S(DIREXIST="":0,1:1)
  ;
 MAKEDIR(DIR) ; Create a new directory
  ;Input: DIR - Linux Directory name to be created
- ;
- N MKDIR
+ ;*573 Added condition check for IRIS
+ N MKDIR,PSNVER
+ S PSNVER=$$UP^XLFSTR($$VERSION^%ZOSV(1))
  I $$OS^%ZOSV()'="UNIX" Q
- I $$UP^XLFSTR($$VERSION^%ZOSV(1))'["CACHE" Q
+ I PSNVER'["CACHE",PSNVER'["IRIS" Q
  I $$DIREXIST(DIR) Q
  X "S MKDIR=$ZF(-1,""mkdir ""_DIR)"
  I 'MKDIR X "S MKDIR=$ZF(-1,""chmod 777 ""_DIR)"

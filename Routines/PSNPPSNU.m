@@ -1,10 +1,10 @@
 PSNPPSNU ;HP/MJE-PPSN update NDF data ; 05 Mar 2014  1:20 PM
- ;;4.0;NATIONAL DRUG FILE;**513**; 30 Oct 98
+ ;;4.0;NATIONAL DRUG FILE;**513,563,566,569**; 30 Oct 98;Build 3
  ;Reference to ^PSDRUG supported by DBIA #2192
  ;Reference to PSN^PSSHUIDG supported by DBIA #3621
  ;Reference to ^GMR(120.8) supported by DBIA #4606
  ;Reference to ^DD supported by DBIA #1258
- ;Reference to EN^GMRAUIX0 supported by DBIA #6372
+ ;Reference to ^PSSUTIL supported by DBIA #3107
  ;
  ; Note: this routine is an adapted version of the origional code by Dr. Dave Alexander
  ;
@@ -45,12 +45,12 @@ DRUGFILE ;
  S OLDNDF="",PSN=$$PATCH^XPDUTL("PSS*1.0*34"),PSN1=$$PATCH^XPDUTL("PSS*1.0*42")
  S ROOT2=$NA(^TMP("PSN PPSN PARSED",$J,"PRODUCTS TO UNMATCH")),ROOT3=$NA(^TMP("PSN PPSN PARSED",$J,"POE")),DA=0
  S DA=0 F  S DA=$O(^PSDRUG(DA)) Q:'DA  S X=$G(^PSDRUG(DA,0)) I X]"" S NA=$P(X,"^"),CLA=$P(X,"^",2),INV=$P(X,"^",3)["I",X=$G(^("ND")),IN=$P($G(^("I"),9999999),"^"),INA=IN'>DT,GE=+X,PR=+$P(X,"^",3),CMOP=$P(X,"^",10),VAPN=$P(X,"^",2) I GE I PR D
- .S OLDNDF=$P($G(^PSDRUG(DA,"ND")),"^",3) ;va product name (3P:50.68); NA = generic name; CLA = VA Class; INV = DEA Special HDLG
+ .S OLDNDF=$P($G(^PSDRUG(DA,"ND")),"^",3) ;va product name (3P:50.68); NA = generic name; CLA = VA Class; INV = DEA Special HDLG 
  .S VAIN=$P($G(^PSNDF(50.68,PR,7)),"^",3) ;inactivation date
  .I $D(@ROOT2@(PR))!VAIN S X="" S:CMOP]"" X="    (CMOP "_CMOP_")" D
  ..S $E(X,30)=VAPN,$E(X,65)=$$FMTE^XLFDT(VAIN,5),INDX=$S(INA:"I",INV:"X",1:"A")
  ..S:IN=9999999 IN="" S ^TMP($J,INDX,NA_"^"_DA_"^"_IN,1)=X,^TMP($J,"^",DA)=""
- ..D UNMDRG
+ ..D UNMDRUG^PSSUTIL(DA)
  ..I PSN I $P($G(^PSDRUG(DA,"DOS")),"^")]""!$O(^("DOS1",0))!$O(^PSDRUG(DA,"DOS2",0)) D LOAD^PSNPPSNV K ^PSDRUG(DA,"DOS"),^("DOS1"),^("DOS2")
  ..I $P($G(^PSDRUG(DA,3)),"^") S DIE=50,DR="213////0;" D ^DIE D ERROR:$D(ERROR("DIERR")) K DIE,DR I PSN1 S IND=$O(^PSDRUG(DA,4," "),-1),$P(^(IND,0),"^",6)="NDF Update"
  .;check here if PR (50.68 IEN this local drug is matched to) exists in TMP rematch
@@ -76,7 +76,6 @@ REINDEX ;Make sure APC xref is correct
  S FDA(57.231,CTRLXIEN_","_CTRLIEN_",",6)="REINDEX"
  D UPDATE^DIE("","FDA","CTRLIEN")
  K FDA
- I $T(EN2^GMRAUIX0)']"" G MORE
  N SUB,DA,DIK,GMRAIEN,CLASS
  S SUB=0 F  S SUB=$O(^GMR(120.8,SUB)) Q:'+SUB  I $D(^GMR(120.8,SUB,3)) D
  .S GMRAIEN=+$P($G(^GMR(120.8,SUB,0)),U) Q:'GMRAIEN
@@ -126,10 +125,3 @@ STRIP(X) ; Strip control characters
  N I,Y
  S Y="" F I=1:1:$L(X) S:$A(X,I)>31 Y=Y_$E(X,I)
  Q Y
- ;
-UNMDRG ; Unmatch Drug File entry
- N PIECE,PRDNAM
- S PRDNAM=$P(^PSDRUG(DA,"ND"),"^",2)
- F PIECE=1:1:5,10,11 S $P(^PSDRUG(DA,"ND"),"^",PIECE)=""
- I PRDNAM'="" S PRDNAM=$E(PRDNAM,1,30) K ^PSDRUG("VAPN",PRDNAM,DA)
- Q

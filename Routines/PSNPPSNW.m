@@ -1,7 +1,7 @@
 PSNPPSNW ;HP/MJE-PPSN update NDF data additional update code ; 05 Mar 2014  1:20 PM
- ;;4.0;NATIONAL DRUG FILE;**513**; 30 Oct 98
+ ;;4.0;NATIONAL DRUG FILE;**513,563,569**; 30 Oct 98;Build 3
  ;
- ;Reference to ^PSSREF supported by DBIA #6391
+ ;Reference to ^PSSREF supported by DBIA #6371
  ;Reference to ^PSDRUG supported by DBIA #221
  ;Reference to ^PSSUTIL supported by DBIA #3107
  ;Reference to ^PS(59.7 supported by DBIA #2613
@@ -16,7 +16,7 @@ REMATCH(DA,PSNFNM) ;called by PSNPPSNU
  ;
  N FLGNDF,K,NEWDF,NFI,NFR,NWND,NWPC1,NWPC3,OLDDF,PSNCLASS,PSNFL,PSNLOC,PSNNDF,PSNNEW,PSNOLD,PSNP,PSNPST,PSNSIZE
  N PSNTYPE,PSNVADC,PSNW,VAID,REC
-ASKND ;
+ASKND ;  
  D RSET,EN1(PSNFNM,DA)
  D REACT S DA=DISPDRG I $D(^PSDRUG(DA,"ND")),$P(^PSDRUG(DA,"ND"),"^",2)]"" D
  .S PSNP=$G(^PSDRUG(DA,"I")) I PSNP,PSNP<DT Q
@@ -34,15 +34,9 @@ ASKND ;
 RSET ;
  S:$D(^PSDRUG(DA,"ND")) PSNID=$P(^PSDRUG(DA,"ND"),"^",10)
  S PSNP=$G(^PSDRUG(DA,"I")) I PSNP,PSNP<DT Q:$D(^PSDRUG(DA,"I"))
- S DA=DISPDRG D:$D(^PSDRUG(DA,"ND")) SETNULL  S:$D(^PSDRUG(DA,3)) $P(^PSDRUG(DA,3),"^",1)=0 K:$D(^PSDRUG("AQ",DA)) ^PSDRUG("AQ",DA)
- I $D(PSNID),PSNID]"" K ^PSDRUG("AQ1",PSNID,DA) K PSNID
+ S DA=DISPDRG D UNMDRUG^PSSUTIL(DA) S:$D(^PSDRUG(DA,3)) $P(^PSDRUG(DA,3),"^",1)=0 K:$D(^PSDRUG("AQ",DA)) ^PSDRUG("AQ",DA)
+ I $D(PSNID),PSNID]"" K PSNID
  D ^PSSREF ; *OK
- Q
- ;
-SETNULL ;
- S ZXZX=$P(^PSDRUG(DA,"ND"),"^",2),$P(^PSDRUG(DA,"ND"),"^",1)="",$P(^PSDRUG(DA,"ND"),"^",2)="",$P(^PSDRUG(DA,"ND"),"^",3)=""
- S $P(^PSDRUG(DA,"ND"),"^",4)="",$P(^PSDRUG(DA,"ND"),"^",5)="",$P(^PSDRUG(DA,"ND"),"^",10)=""
- I ZXZX]"" S ZXZX=$E(ZXZX,1,30) I $D(^PSDRUG("VAPN",ZXZX,DA)) K ^PSDRUG("VAPN",ZXZX,DA) K ZXZX
  Q
  ;
  ;-vvvvvvvvv- from PSSUTIL -vvvvvvvvv-
@@ -85,14 +79,14 @@ BLDIT ; START ATTEMPT TO MATCH
  ;-vvvvvvvvv- from PSNHIT -vvvvvvvvv- sets the match in ^PSNTRAN to be verified
  ;
 SET S:'$D(^PSNTRAN(PSNB,0)) $P(^PSNTRAN(0),"^",4)=($P(^PSNTRAN(0),"^",4))+1,$P(^PSNTRAN(0),"^",3)=PSNB
- S ^PSNTRAN(PSNB,0)=PSNNDF_"^"_PSNFNM_"^"_PSNCLASS_"^^"_PSNSIZE_"^^"_PSNTYPE_"^"_DUZ ;D PKI W:$D(IOF) @IOF
+ S ^PSNTRAN(PSNB,0)=PSNNDF_"^"_PSNFNM_"^"_PSNCLASS_"^^"_PSNSIZE_"^^"_PSNTYPE_"^"_DUZ ;D PKI W:$D(IOF) @IOF 
  S:'$D(PSNFL) PSNFL=0
  Q
  ;
  ;
  ;-vvvvvvvvv- from PSNVFY -vvvvvvvvv-
  ;
-CHK(PSNB) ;
+CHK(PSNB) ; 
  I $D(PSNFL) Q:PSNFL
  S PSNP=$G(^PSDRUG(PSNB,"I")) I PSNP,PSNP<DT K ^PSNTRAN(PSNB,0) Q
  Q:'$D(^PSNTRAN(PSNB,0))  Q:$P(^PSNTRAN(PSNB,0),"^",9)="Y"  Q:'$P(^PSNTRAN(PSNB,0),"^",2)
