@@ -24,11 +24,17 @@ fixed in PSN\*4.0\*565--can result in your old GCNSEQNOs being deleted.
 PSN\*4.0\*565 is an important patch if you use FDB with VistA. If you don't install it, GCNSEQNOs
 apparently get deleted.
 
+There are some changes with no patches for them right now: Currently:
+
+- 10003: PSNFTP2, PSNPARM, PSNPPSNF
+- 10004: PSNPARM
+
 # Download
  * [PSN\*4.0\*10001](https://github.com/shabiel/PSN-4-513/releases/download/PSN-4.0-10001/PSN_4-0_10001.KID)
  * [PSN\*4.0\*10002](https://github.com/shabiel/PSN-4-513/releases/download/PSN-4.0-10002/PSN_4-0_10002.KID)
 
 or [Multibuild]( https://github.com/shabiel/PSN-4-513/releases/download/PSN-4.0-10002/PSN_4-0_10002-MB.KID) (includes PSN\*4.0\*513, PSN\*4.0\*10001, PSN\*4.0\*563, PSN\*4.0\*565, PSN\*4.0\*10002)
+ * PSN\*4.0\*10003 not released.
 
 # Install
 Here is the current recommended install order (all builds are safe to re-install):
